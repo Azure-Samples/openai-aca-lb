@@ -46,9 +46,33 @@ And what happens if I have multiple backends with the same priority? Let's assum
 
 The source code provides a Dockerfile, which means you are free to build and deploy to your own service, as long as it supports container images.
 
-### [Option 1] Deploy the service directly to an Azure Container Apps
+### [Option 1] Deploy using Azure Developer CLI
+Deploying this solution using the [Azure Developer CLI](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/install-azd) is super simple. All you need to do is clone this repo and run the following command, locally (given you [installed](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/install-azd) the Azure Developer CLI):
 
-If you are not comfortable working with container images and you would like a very easy way to test this load balancer in Azure, you can deploy quickly to [Azure Container Apps](https://azure.microsoft.com/products/container-apps):
+`
+azd up
+`
+
+You will be asked these input variables:
+- backend_1_url
+- backend_1_priority
+- backend_1_api_key
+- backend_2_url
+- backend_2_priority
+- backend_2_api_key
+
+More explanation of what they do can be found [here](#configuring-the-openai-endpoints).
+Your deployment will create a Azure Container Apps with two OpenAI backends to load balance to. If you want to add more, you can just edit your Container Apps environment variables.
+
+When you are done testing, you can tear down all resources by running
+
+`
+azd up
+`
+
+### [Option 2] Deploy the service directly to an Azure Container Apps
+
+If you are not comfortable working with container images or cloning this repo and you would like a very easy way to test this load balancer in Azure, you can deploy quickly to [Azure Container Apps](https://azure.microsoft.com/products/container-apps):
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fazure-samples%2Fopenai-apim-lb%2Fmain%2Fazuredeploy.json)
 
@@ -56,7 +80,7 @@ If you are not comfortable working with container images and you would like a ve
 - After the deployment is finished, go to your newly created Container Apps service and from the Overview menu, get the Application Url of your app. The format will be "https://app-[something].[region].azurecontainerapps.io". This is the URL you will call from your client applications
 
 
-### [Option 2] Build and deploy as a Docker image
+### [Option 3] Build and deploy as a Docker image
 
 If you want to clone this repository and build your own image instead of using the pre-built public image:
 
@@ -66,7 +90,7 @@ docker build -t aoai-smart-loadbalancing:v1 .
 
 This will use the Dockerfile which will build the source code inside the container itself (no need to have .NET build tools in your host machine) and then it will copy the build output to a new runtime image for ASP.NET 8. Just make sure your Docker version supports [multi-stage](https://docs.docker.com/build/building/multi-stage/) builds. The final image will have around 87 MB.
 
-### [Option 3] Deploy the pre-built image from Docker hub
+### [Option 4] Deploy the pre-built image from Docker hub
 
 If you don't want to build the container from the source code, you can pull it from the public Docker registry:
 
