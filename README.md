@@ -84,9 +84,10 @@ If you are not comfortable working with container images or cloning this repo an
 
 If you want to clone this repository and build your own image instead of using the pre-built public image:
 
-`
+```
+cd src
 docker build -t aoai-smart-loadbalancing:v1 .
-`
+```
 
 This will use the Dockerfile which will build the source code inside the container itself (no need to have .NET build tools in your host machine) and then it will copy the build output to a new runtime image for ASP.NET 8. Just make sure your Docker version supports [multi-stage](https://docs.docker.com/build/building/multi-stage/) builds. The final image will have around 87 MB.
 
