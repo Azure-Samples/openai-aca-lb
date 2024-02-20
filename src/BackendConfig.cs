@@ -7,7 +7,7 @@ public class BackendConfig
     public required string Url { get; set; }
     public string? DeploymentName { get; set; }
     public int Priority { get; set; }
-    public required string ApiKey { get; set; }
+    public string? ApiKey { get; set; }
 
     public static IReadOnlyDictionary<string, BackendConfig> LoadConfig(IConfiguration config)
     {
@@ -27,7 +27,7 @@ public class BackendConfig
             var key = $"BACKEND_{backendIndex}";
             var url = LoadEnvironmentVariable(environmentVariables, backendIndex, "URL");
             var deploymentName = LoadEnvironmentVariable(environmentVariables, backendIndex, "DEPLOYMENT_NAME", isMandatory: false);
-            var apiKey = LoadEnvironmentVariable(environmentVariables, backendIndex, "APIKEY");
+            var apiKey = LoadEnvironmentVariable(environmentVariables, backendIndex, "APIKEY", isMandatory: false);
             var priority = Convert.ToInt32(LoadEnvironmentVariable(environmentVariables, backendIndex, "PRIORITY"));
 
             returnDictionary.Add(key, new BackendConfig { Url = url, ApiKey = apiKey, Priority = priority, DeploymentName = deploymentName });

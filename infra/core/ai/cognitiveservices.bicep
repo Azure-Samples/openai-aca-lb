@@ -1,35 +1,31 @@
-metadata description = 'Creates an Azure Cognitive Services instance.'
 param name string
 param location string = resourceGroup().location
 param tags object = {}
-@description('The custom subdomain name used to access the API. Defaults to the value of the name parameter.')
-param customSubDomainName string = name
+param managedIdentityName string = ''
 param deployments array = []
 param kind string = 'OpenAI'
-
-@allowed([ 'Enabled', 'Disabled' ])
-param publicNetworkAccess string = 'Enabled'
 param sku object = {
   name: 'S0'
 }
+param deploymentCapacity int = 1
 
-param allowedIpRules array = []
-param networkAcls object = empty(allowedIpRules) ? {
-  defaultAction: 'Allow'
-} : {
-  ipRules: allowedIpRules
-  defaultAction: 'Deny'
+resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' existing = {
+  name: managedIdentityName
 }
 
 resource account 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
   name: name
   location: location
-  tags: tags
+  tags: union(tags, { 'azd-service-name': name })
   kind: kind
+  identity: {
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '${managedIdentity.id}': {}
+    }
+  }
   properties: {
-    customSubDomainName: customSubDomainName
-    publicNetworkAccess: publicNetworkAccess
-    networkAcls: networkAcls
+    customSubDomainName: name
   }
   sku: sku
 }
@@ -44,10 +40,9 @@ resource deployment 'Microsoft.CognitiveServices/accounts/deployments@2023-05-01
   }
   sku: contains(deployment, 'sku') ? deployment.sku : {
     name: 'Standard'
-    capacity: 20
+    capacity: deploymentCapacity
   }
 }]
 
-output endpoint string = account.properties.endpoint
-output id string = account.id
-output name string = account.name
+output openAiName string = account.name
+output openAiEndpointUri string = account.properties.endpoint

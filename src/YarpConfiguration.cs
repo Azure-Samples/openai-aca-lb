@@ -1,4 +1,6 @@
 using System.Net;
+using Azure.Core;
+using Azure.Identity;
 using Yarp.ReverseProxy.Configuration;
 using Yarp.ReverseProxy.Forwarder;
 using Yarp.ReverseProxy.Health;
@@ -88,14 +90,24 @@ public class YarpConfiguration
 
     internal Func<RequestTransformContext, ValueTask> TransformRequest()
     {
-        return context =>
+        return async context =>
         {
             var proxyHeaders = context.ProxyRequest.Headers;
             var reverseProxyFeature = context.HttpContext.GetReverseProxyFeature();
 
             var backendConfig = backends[reverseProxyFeature.AvailableDestinations[0].DestinationId];
-            proxyHeaders.Remove("api-key");
-            proxyHeaders.Add("api-key", backendConfig.ApiKey);
+
+            if (!string.IsNullOrEmpty(backendConfig.ApiKey))
+            {
+                proxyHeaders.Remove("api-key");
+                proxyHeaders.Add("api-key", backendConfig.ApiKey);
+            }
+            else
+            {
+                AccessToken accessToken = await new DefaultAzureCredential().GetTokenAsync(new TokenRequestContext(scopes: ["https://cognitiveservices.azure.com/.default"]));
+                proxyHeaders.Remove("Authorization");
+                proxyHeaders.Add("Authorization", "Bearer " + accessToken.Token);
+            }
 
             if (backendConfig.DeploymentName != null)
             {
@@ -108,8 +120,6 @@ public class YarpConfiguration
                     context.Path = new PathString(context.Path.Value.Replace(pathSegments[3], backendConfig.DeploymentName));
                 }
             }
-            
-            return default;
         };
     }
 }

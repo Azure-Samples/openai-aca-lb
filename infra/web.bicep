@@ -6,6 +6,7 @@ param applicationInsightsName string
 param containerAppsEnvironmentName string
 param containerRegistryName string
 param identityName string
+param identityClientId string
 param logAnalyticsWorkspaceName string
 
 @minLength(1)
@@ -16,10 +17,6 @@ param backend_1_url string
 param backend_1_priority int
 
 @minLength(1)
-@description('The API key your first OpenAI endpoint')
-param backend_1_api_key string
-
-@minLength(1)
 @description('The URL of your second Azure OpenAI endpoint in the following format: https://[name].openai.azure.com')
 param backend_2_url string
 
@@ -27,13 +24,11 @@ param backend_2_url string
 param backend_2_priority int
 
 @minLength(1)
-@description('The API key your second OpenAI endpoint')
-param backend_2_api_key string
+@description('The URL of your second Azure OpenAI endpoint in the following format: https://[name].openai.azure.com')
+param backend_3_url string
 
-resource webIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
-  name: identityName
-  location: location
-}
+@description('The priority of your second OpenAI endpoint (lower number means higher priority)')
+param backend_3_priority int
 
 
 // module containerAppsEnvironment 'core/host/container-apps-environment.bicep' = {
@@ -94,6 +89,10 @@ module app 'core/host/container-app.bicep' = {
         value: applicationInsights.properties.ConnectionString
       }
       {
+        name: 'AZURE_CLIENT_ID'
+        value: identityClientId
+      }
+      {
         name: 'BACKEND_1_URL'
         value: backend_1_url
         // Continue with the rest of the environment variables
@@ -101,10 +100,6 @@ module app 'core/host/container-app.bicep' = {
       {
         name: 'BACKEND_1_PRIORITY'
         value: string(backend_1_priority)
-      }
-      {
-        name: 'BACKEND_1_APIKEY'
-        value: backend_1_api_key
       }
       {
         name: 'BACKEND_2_URL'
@@ -115,8 +110,12 @@ module app 'core/host/container-app.bicep' = {
         value: string(backend_2_priority)
       }
       {
-        name: 'BACKEND_2_APIKEY'
-        value: backend_2_api_key
+        name: 'BACKEND_3_URL'
+        value: backend_3_url
+      }
+      {
+        name: 'BACKEND_3_PRIORITY'
+        value: string(backend_3_priority)
       }
     ]
     imageName: 'andredewes/aoai-smart-loadbalancing:v1'
