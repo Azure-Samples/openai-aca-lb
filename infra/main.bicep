@@ -147,3 +147,4 @@ module openAis 'core/ai/cognitiveservices.bicep' = [for (config, i) in items(ope
   }
 }]
 
+output CONTAINER_APP_URL string =web.outputs.uri
