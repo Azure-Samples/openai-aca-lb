@@ -53,8 +53,6 @@ var resourceToken = toLower(uniqueString(subscription().id, name, location))
 var prefix = '${name}-${resourceToken}'
 var tags = { 'azd-env-name': name }
 
-
-
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: '${name}-rg'
   location: location
@@ -147,4 +145,4 @@ module openAis 'core/ai/cognitiveservices.bicep' = [for (config, i) in items(ope
   }
 }]
 
-output CONTAINER_APP_URL string =web.outputs.uri
+output CONTAINER_APP_URL string = web.outputs.uri

@@ -30,27 +30,6 @@ param backend_3_url string
 @description('The priority of your second OpenAI endpoint (lower number means higher priority)')
 param backend_3_priority int
 
-
-// module containerAppsEnvironment 'core/host/container-apps-environment.bicep' = {
-//   name: containerAppsEnvironmentName
-//   params: {
-//     name: containerAppsEnvironmentName
-//     location: location
-//     tags: tags
-//     logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
-//     applicationInsightsName: applicationInsightsName
-//   }
-// }
-
-// module containerRegistry 'core/host/container-registry.bicep' = {
-//   name: containerRegistryName
-//   params: {
-//     name: containerRegistryName
-//     location: location
-//     tags: tags
-//   }
-// }
-
 // Container apps host (including container registry)
 module containerApps 'core/host/container-apps.bicep' = {
   name: 'container-apps'
