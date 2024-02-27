@@ -49,6 +49,12 @@
             "metadata": {
                 "description": "The API key of your second OpenAI endpoint"
             }
+        },
+        "deploymentCapacity": {
+            "value": "${OPENAI_CAPACITY}",
+            "metadata": {
+                "description": "The OpenAI endpoints capacity (in thousands of tokens per minute)."
+            }
         }
     }
 }

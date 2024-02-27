@@ -24,6 +24,9 @@ param embeddingGptDeploymentName string = 'embedding'
 @description('Name of the Chat GPT model.')
 param chatGptModelName string = 'gpt-35-turbo'
 
+@description('The OpenAI endpoints capacity (in thousands of tokens per minute)')
+param deploymentCapacity int = 30
+
 // You can add more OpenAI instances by adding more objects to the openAiInstances object
 // Then update the apim policy xml to include the new instances
 @description('Object containing OpenAI instances. You can add more instances by adding more objects to this parameter.')
@@ -118,7 +121,7 @@ module openAis 'core/ai/cognitiveservices.bicep' = [for (config, i) in items(ope
     sku: {
       name: openAiSkuName
     }
-    deploymentCapacity: 1
+    deploymentCapacity: deploymentCapacity
     deployments: [
       {
         name: chatGptDeploymentName
@@ -140,7 +143,7 @@ module openAis 'core/ai/cognitiveservices.bicep' = [for (config, i) in items(ope
         }
         sku: {
           name: 'Standard'
-          capacity: 1
+          capacity: deploymentCapacity
         }
       }
     ]

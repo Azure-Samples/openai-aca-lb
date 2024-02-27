@@ -46,14 +46,21 @@ And what happens if I have multiple backends with the same priority? Let's assum
 
 The source code provides a Dockerfile, which means you are free to build and deploy to your own service, as long as it supports container images.
 
-### [Option 1] Deploy using Azure Developer CLI
+### [Option 1 - Recommended] Deploy using Azure Developer CLI
 Deploying this solution using the [Azure Developer CLI](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/install-azd) is super simple. All you need to do is clone this repo and run the following command, locally (given you [installed](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/install-azd) the Azure Developer CLI):
 
 `
 azd up
 `
 
-Your deployment will create a Azure Container Apps with three OpenAI backends to load balance to. If you want to add more, you can just edit your Container Apps environment variables.
+Your deployment will create a Azure Container Apps with three GPT 3.5 Turbo backends to load balance to. If you want to add more, you can just edit your Container Apps environment variables.
+Each of the OpenAI instances will be deployed with 30K TPM (tokens per minute) capacity by default. If you are getting deployment capacity errors, you might want to lower than value. Or, if you are planning to deploy higher capacity, you can set the following AZD variable before deploying:
+
+`
+azd env set OPENAI_CAPACITY 50
+`
+
+This command will deploy the three backends with 50K TPM each. Be aware of [regional quotas and limits](https://learn.microsoft.com/en-us/azure/ai-services/openai/quotas-limits)
 
 When you are done testing, you can tear down all resources by running
 
