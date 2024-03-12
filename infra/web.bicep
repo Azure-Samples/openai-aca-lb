@@ -42,14 +42,14 @@ param backend_3_priority int
 //   }
 // }
 
-// module containerRegistry 'core/host/container-registry.bicep' = {
-//   name: containerRegistryName
-//   params: {
-//     name: containerRegistryName
-//     location: location
-//     tags: tags
-//   }
-// }
+ module containerRegistry 'core/host/container-registry.bicep' = {
+   name: containerRegistryName
+   params: {
+     name: containerRegistryName
+     location: location
+     tags: tags
+   }
+ }
 
 // Container apps host (including container registry)
 module containerApps 'core/host/container-apps.bicep' = {
@@ -61,6 +61,9 @@ module containerApps 'core/host/container-apps.bicep' = {
     containerRegistryName: containerRegistryName
     logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
   }
+  dependsOn: [
+    containerRegistry
+  ]
 }
 
 module app 'core/host/container-app.bicep' = {
@@ -118,11 +121,10 @@ module app 'core/host/container-app.bicep' = {
         value: string(backend_3_priority)
       }
     ]
-    imageName: 'andredewes/aoai-smart-loadbalancing:v1'
-    targetPort: 8080
   }
   dependsOn: [
     containerApps
+    containerRegistry
   ]
 }
 
@@ -132,6 +134,5 @@ resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing
 
 output SERVICE_WEB_NAME string = app.outputs.name
 output SERVICE_WEB_URI string = app.outputs.uri
-output SERVICE_WEB_IMAGE_NAME string = app.outputs.imageName
-
+output AZURE_REGISTRY_NAME string = containerRegistry.outputs.name
 output uri string = app.outputs.uri

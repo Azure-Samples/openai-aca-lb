@@ -47,7 +47,7 @@ And what happens if I have multiple backends with the same priority? Let's assum
 The source code provides a Dockerfile, which means you are free to build and deploy to your own service, as long as it supports container images.
 
 ### [Option 1 - Recommended] Deploy using Azure Developer CLI
-Deploying this solution using the [Azure Developer CLI](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/install-azd) is super simple. All you need to do is clone this repo and run the following command, locally (given you [installed](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/install-azd) the Azure Developer CLI):
+Deploying this solution using the [Azure Developer CLI](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/install-azd) is super simple. All you need to do is clone this repo and run the following command, locally (given you [installed](https://learn.microsoft.com/en-us/azure/developer/azure-developer-cli/install-azd) the Azure Developer CLI) and [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli):
 
 `
 azd up

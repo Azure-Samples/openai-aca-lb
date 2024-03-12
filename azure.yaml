@@ -3,5 +3,17 @@
 name: aoai-smart-loadbalancing
 metadata:
   template: aoai-smart-loadbalancing@0.0.1
+hooks:
+  postprovision:
+    posix:
+      shell: sh
+      continueOnError: false
+      interactive: true
+      run: azd-hooks/postprovision.sh
+    windows:
+      shell: pwsh
+      continueOnError: false
+      interactive: true
+      run: azd-hooks/postprovision.ps1
 infra:
     provider: "bicep"

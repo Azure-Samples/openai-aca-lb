@@ -151,4 +151,6 @@ module openAis 'core/ai/cognitiveservices.bicep' = [for (config, i) in items(ope
 }]
 
 output CONTAINER_APP_URL string =web.outputs.uri
+output SERVICE_WEB_NAME string = web.outputs.SERVICE_WEB_NAME
+output AZURE_REGISTRY_NAME string =web.outputs.AZURE_REGISTRY_NAME
 output RESOURCE_GROUP_NAME string =resourceGroup.name
