@@ -1,3 +1,22 @@
+---
+page_type: sample
+languages:
+- azdeveloper
+- csharp
+- dockerfile
+- bicep
+products:
+- azure
+- azure-openai
+- azure-container-apps
+- azure-container-registry
+- azure-monitor
+urlFragment: openai-aca-lb
+name: Azure OpenAI priority-based load balancer with Azure Container Apps
+description: A load balancer crafted specifically for Azure OpenAI, which is aware of 'retry-after' headers and intelligently pause traffic when certain OpenAI endpoints reach maximum capacity.
+---
+<!-- YAML front-matter schema: https://review.learn.microsoft.com/en-us/help/contribute/samples/process/onboarding?branch=main#supported-metadata-fields-for-readmemd -->
+
 ![Smart load balancing](./images/intro-loadbalance.png)
 
 # :rocket: Smart load balancing for OpenAI endpoints
