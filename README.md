@@ -72,6 +72,15 @@ Deploying this solution using the [Azure Developer CLI](https://learn.microsoft.
 azd up
 `
 
+> [!NOTE]  
+> If you are using GitHub Codespaces, you need login to AZD and AZ CLI before running *azd up*:
+> ```
+> az login --use-device-code
+> azd auth login --use-device-code
+> azd up
+> ```
+
+
 Your deployment will create a Azure Container Apps with three GPT 3.5 Turbo backends to load balance to. If you want to add more, you can just edit your Container Apps environment variables.
 Each of the OpenAI instances will be deployed with 30K TPM (tokens per minute) capacity by default. If you are getting deployment capacity errors, you might want to lower than value. Or, if you are planning to deploy higher capacity, you can set the following AZD variable before deploying:
 
