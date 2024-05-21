@@ -102,7 +102,7 @@ If you are not comfortable working with container images or cloning this repo an
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FAzure-Samples%2Fopenai-aca-lb%2Fmain%2Fazuredeploy.json)
 
-- Clicking the Deploy button above, you will be taken to an Azure page with the required parameters. You need to fill the parameters beginning with "Backend_X_" (see below in [Configuring the OpenAI endpoints](#Configuring-the-OpenAI-endpoints) for more information on what they do)
+- Clicking the Deploy button above, you will be taken to an Azure page with the required parameters. You need to fill the parameters beginning with "Backend_X_" (see below in [Configuring the OpenAI endpoints](#configuring-the-openai-endpoints) for more information on what they do)
 - After the deployment is finished, go to your newly created Container Apps service and from the Overview menu, get the Application Url of your app. The format will be "https://app-[something].[region].azurecontainerapps.io". This is the URL you will call from your client applications
 
 
