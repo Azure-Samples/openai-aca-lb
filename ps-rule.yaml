@@ -1,0 +1,11 @@
+# YAML: Set the AZURE_BICEP_FILE_EXPANSION configuration option to enable expansion
+configuration:
+  AZURE_BICEP_FILE_EXPANSION: true
+
+rule:
+  exclude:
+  # This template is for load-balancing a public-facing Azure OpenAI instance
+  # so these rules aren't applicable.
+   - Azure.AI.PublicAccess
+   - Azure.AI.DisableLocalAuth
+   - Azure.AI.PrivateEndpoints
