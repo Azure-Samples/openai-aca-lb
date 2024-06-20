@@ -30,7 +30,7 @@ public class BackendConfig
             var apiKey = LoadEnvironmentVariable(environmentVariables, backendIndex, "APIKEY", isMandatory: false);
             var priority = Convert.ToInt32(LoadEnvironmentVariable(environmentVariables, backendIndex, "PRIORITY"));
 
-            returnDictionary.Add(key, new BackendConfig { Url = url, ApiKey = apiKey, Priority = priority, DeploymentName = deploymentName });
+            returnDictionary.Add(key, new BackendConfig { Url = url!, ApiKey = apiKey!, Priority = priority!, DeploymentName = deploymentName! });
         }
 
         //Load the general settings not in scope only for specific backends

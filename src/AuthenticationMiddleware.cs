@@ -14,7 +14,7 @@ public class AuthenticationMiddleware
     {
         _next = next;
         _logger = logger;
-        _customerConfigurations = configuration.GetSection("CustomerConfiguration").Get<Dictionary<string, string>>();
+        _customerConfigurations = configuration.GetSection("CustomerConfiguration").Get<Dictionary<string, string>>() ?? [];
     }
 
     public async Task InvokeAsync(HttpContext context)

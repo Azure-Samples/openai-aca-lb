@@ -9,6 +9,10 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        // Add Application Insights
+        builder.Services.AddApplicationInsightsTelemetry(o => o.ConnectionString = builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
+
+
         var backendConfiguration = BackendConfig.LoadConfig(builder.Configuration);
         var yarpConfiguration = new YarpConfiguration(backendConfiguration);
         builder.Services.AddSingleton<IPassiveHealthCheckPolicy, ThrottlingHealthPolicy>();
@@ -21,8 +25,11 @@ public class Program
         builder.Services.AddHealthChecks();
         var app = builder.Build();
         
-        // possible to add another configuration var to enable/disable this
-        app.UseMiddleware<AuthenticationMiddleware>(); 
+        var enableAuthentication = builder.Configuration.GetValue<bool>("EnableAuthenticationMiddleware");
+        if (enableAuthentication)
+        {
+            app.UseMiddleware<AuthenticationMiddleware>();
+        }
 
         app.MapHealthChecks("/healthz");
         app.MapReverseProxy(m =>
