@@ -62,7 +62,7 @@ azd up
 > ```
 
 
-Your deployment will create a Azure Container Apps with three GPT 3.5 Turbo backends to load balance to. If you want to add more, you can just edit your Container Apps environment variables.
+Your deployment will create an Azure Container Apps with three GPT 3.5 Turbo backends to load balance to. If you want to add more, you can just edit your Container Apps environment variables.
 Each of the OpenAI instances will be deployed with 30K TPM (tokens per minute) capacity by default. If you are getting deployment capacity errors, you might want to lower than value. Or, if you are planning to deploy higher capacity, you can set the following AZD variable before deploying:
 
 `
@@ -175,7 +175,7 @@ This solution uses the local memory to store the endpoints health state. That me
 So, it might occur that internally, different instances will try route to throttled backends and will need to retry to another backend. Eventually, all instances will be in sync again at a small cost of unnecessary roundtrips to throttled endpoints.
 I honestly think this is a very small price to pay, but if you want to solve that you can always change the source code to use an external shared cache such as Redis, so all instances will share the same cached object.
 
-Having this in mind, be careful when you configure your hosting container service when it comes to scalability. For instance, the default scaling rules in a Azure Container Apps is the number of concurrent HTTP requests: if it is higher than 10, it will create another container instance. This effect is undesirable for the load balancer as it will create many instances, and that's why the Quick Deploy button in this repo changes that default behavior to only scale the container when CPU usage is higher than 50%. 
+Having this in mind, be careful when you configure your hosting container service when it comes to scalability. For instance, the default scaling rules in an Azure Container Apps is the number of concurrent HTTP requests: if it is higher than 10, it will create another container instance. This effect is undesirable for the load balancer as it will create many instances, and that's why the Quick Deploy button in this repo changes that default behavior to only scale the container when CPU usage is higher than 50%. 
 
 ### Logging
 The default logging features coming from [YARP](https://microsoft.github.io/reverse-proxy/articles/diagnosing-yarp-issues.html) are not changed here, it is still applicable. For example, you should see these log lines being print in the container console (Stdout) when requests are sucesfully redirected to the backends:
