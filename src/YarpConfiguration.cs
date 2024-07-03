@@ -104,9 +104,11 @@ public class YarpConfiguration
             }
             else
             {
-                AccessToken accessToken = await new DefaultAzureCredential().GetTokenAsync(new TokenRequestContext(scopes: ["https://cognitiveservices.azure.com/.default"]));
+                var tokenProvider = context.HttpContext.RequestServices.GetService<AzureCredentialTokenProvider>()!;
+                var accessToken = await tokenProvider.GetTokenAsync();
+                
                 proxyHeaders.Remove("Authorization");
-                proxyHeaders.Add("Authorization", "Bearer " + accessToken.Token);
+                proxyHeaders.Add("Authorization", "Bearer " + accessToken);
             }
 
             if (backendConfig.DeploymentName != null)

@@ -12,6 +12,7 @@ public class Program
         var backendConfiguration = BackendConfig.LoadConfig(builder.Configuration);
         var yarpConfiguration = new YarpConfiguration(backendConfiguration);
         builder.Services.AddSingleton<IPassiveHealthCheckPolicy, ThrottlingHealthPolicy>();
+        builder.Services.AddSingleton<AzureCredentialTokenProvider>();
         builder.Services.AddReverseProxy().AddTransforms(m =>
         {
             m.AddRequestTransform(yarpConfiguration.TransformRequest());
