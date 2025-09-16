@@ -7,7 +7,7 @@ param location string
 param openAiSkuName string = 'S0'
 
 @description('Version of the Chat GPT model.')
-param chatGptModelVersion string = '0613'
+param chatGptModelVersion string = '0125'
 
 @description('Name of the Chat GPT deployment.')
 param chatGptDeploymentName string = 'chat'
